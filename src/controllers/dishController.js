@@ -96,12 +96,12 @@ dishController.uploadDish = catchAsync(async (req, res, next) => {
   });
 });
 
-//create new content
+//add ingredients
 dishController.addIngredients = catchAsync(async (req, res, next) => {
   let { dishId, ingredientName, qty, measurement } = req.body;
 
   //BECAUSE IS NOT LISTENING FOR ANY FILE, USE RAW TO INPUT YOUR REQUESTS.
-  
+
   // check if a dish exists
   const dish = await Dish.findOne({ dishId });
   if (!dish) return next(new AppError("Dish not found", 404));
@@ -135,19 +135,17 @@ dishController.getAllCourses = catchAsync(async (req, res, next) => {
   });
 });
 
-//get a course by id
-dishController.getOneCourse = catchAsync(async (req, res, next) => {
-  //find course thru _id
-  const courseId = req.params.id;
-  //console.log(_id);
+//get a dish by id
+dishController.findDish = catchAsync(async (req, res, next) => {
+  const dishId = req.params.id;
 
-  let course = await Course.findOne({ courseId });
-  if (!course) return next(new AppError("Course not found", 404));
+  let dish = await Dish.findOne({ dishId });
+  if (!dish) return next(new AppError("Dish not found", 404));
 
   //send response
   res.status(200).send({
     status: "success",
-    course,
+    dish,
   });
 });
 

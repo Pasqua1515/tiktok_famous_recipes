@@ -5,8 +5,12 @@ const dishController = require("../controllers/dishController");
 //create dish
 router.post("/uploadDish", dishController.upload, dishController.uploadDish);
 
-// //add ingredients and recipe
+//add ingredients
 router.patch("/addIngredients", dishController.addIngredients);
+
+// find one dish by dish ID
+router.get("/findDish/:id", dishController.findDish);
+
 
 // //get all courses
 // router.get(
