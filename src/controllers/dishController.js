@@ -121,17 +121,17 @@ dishController.addIngredients = catchAsync(async (req, res, next) => {
   });
 });
 
-//see all courses MO B-17
-dishController.getAllCourses = catchAsync(async (req, res, next) => {
-  const courses = await Course.find({});
-  if (!courses) {
-    return next(new AppError(`Could not GET all courses`, 404));
+//see all dishes 
+dishController.getAllDishes = catchAsync(async (req, res, next) => {
+  const dishes = await Dish.find({});
+  if (!dishes) {
+    return next(new AppError(`Could not GET all dishes`, 404));
   }
 
   //send a response
   res.status(200).send({
     status: "status",
-    data: courses,
+    data: dishes,
   });
 });
 
