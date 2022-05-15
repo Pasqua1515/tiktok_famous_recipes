@@ -15,7 +15,6 @@ dishController.upload = upload.array("files", 3);
 
 //create a course
 dishController.uploadDish = catchAsync(async (req, res, next) => {
-  console.log("is uploading");
   let {
     dishName,
     description,
@@ -24,9 +23,6 @@ dishController.uploadDish = catchAsync(async (req, res, next) => {
     date,
     tiktokLink,
     views,
-    ingredientName,
-    qty,
-    measurement,
     tags,
     earlyPrep,
     likes,
@@ -35,7 +31,7 @@ dishController.uploadDish = catchAsync(async (req, res, next) => {
   const dishExist = await Dish.exists({ dishName });
   if (dishExist) return next(new AppError("Dish already Exists", 400));
 
-  // // Generate a specific id for each course
+  // // Generate a specific id for each dish
   let dishId;
   const lastCourse = await Dish.find().sort({ _id: -1 }).limit(1);
   if (lastCourse.length == 0) {
@@ -75,7 +71,7 @@ dishController.uploadDish = catchAsync(async (req, res, next) => {
   });
 
   //instance methods
-  newDish.addIngredients(ingredientName, qty, measurement);
+
   newDish.addAbout(
     date,
     description,
@@ -101,40 +97,25 @@ dishController.uploadDish = catchAsync(async (req, res, next) => {
 });
 
 //create new content
-dishController.createContent = catchAsync(async (req, res, next) => {
-  let { courseId, content } = req.body;
+dishController.addIngredients = catchAsync(async (req, res, next) => {
+  let { dishId, ingredientName, qty, measurement } = req.body;
 
-  // check if a course exists
-  const course = await Course.findOne({ courseId });
-  if (!course) return next(new AppError("Course not found", 404));
+  //BECAUSE IS NOT LISTENING FOR ANY FILE, USE RAW TO INPUT YOUR REQUESTS.
+  
+  // check if a dish exists
+  const dish = await Dish.findOne({ dishId });
+  if (!dish) return next(new AppError("Dish not found", 404));
 
-  // get video for content
-  let videoUrl;
-  if (req.files) {
-    const path = req.files[0].path;
-    videoUrl = await cloudUpload(path);
-
-    if (!videoUrl) {
-      fs.unlinkSync(path);
-      return next(new AppError("Network Error!", 503));
-    }
-    fs.unlinkSync(path);
-  }
-
-  content = JSON.parse(content);
-  content.video = videoUrl.url;
-
-  // add content to course
-  course.addContents(content);
+  dish.addIngredients(ingredientName, qty, measurement);
 
   //save the schema
-  course.save((err, result) => {
+  dish.save((err, result) => {
     if (err) return next(new AppError({ message: err.message }, 400));
     else {
       //send a response
       res.status(201).send({
         status: "success",
-        message: "Course Content Added Successfully!",
+        message: "Ingredient Added Successfully!",
       });
     }
   });
