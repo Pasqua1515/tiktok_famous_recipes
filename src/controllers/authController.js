@@ -166,87 +166,92 @@ userAuth.forgotPassword = catchAsync(async (req, res, next) => {
   }
 });
 
-// Change Password
-userAuth.resetPassword = catchAsync(async (req, res, next) => {
-  const resetToken = req.params.token;
+// // Change Password
+// userAuth.resetPassword = catchAsync(async (req, res, next) => {
+//   const resetToken = req.params.token;
 
-  // check if token exists
-  if (!resetToken) return next(new AppError("Token Does Not Exist!", 400));
+//   // check if token exists
+//   if (!resetToken) return next(new AppError("Token Does Not Exist!", 400));
 
-  // find user with token
-  let user = await User.findOne({ resetToken });
-  if (!user)
-    return next(
-      new AppError(
-        "Link Expired Or Has Already Been Used! Initiate Another Request.",
-        400
-      )
-    );
+//   // find user with token
+//   let user = await User.findOne({ resetToken });
+//   if (!user)
+//     return next(
+//       new AppError(
+//         "Link Expired Or Has Already Been Used! Initiate Another Request.",
+//         400
+//       )
+//     );
 
-  let data = jwt.decodeResetToken(resetToken, user.password.hash),
-    newPassword = req.body.password;
+//   let data = jwt.decodeResetToken(resetToken, user.password.hash),
+//     newPassword = req.body.password;
 
-  if (!data)
-    return next(
-      new AppError(
-        "Link Expired Or Has Already Been Used! Initiate Another Request."
-      )
-    );
+//   if (!data)
+//     return next(
+//       new AppError(
+//         "Link Expired Or Has Already Been Used! Initiate Another Request."
+//       )
+//     );
 
-  // change password
-  user.setPassword(newPassword);
-  user.passwordChangedAt = new Date();
-  user.resetToken = "";
-  user.save((err, _) => {
-    if (err)
-      return next(
-        new AppError(
-          "Could Not Change Password. We Will Fix It Right Away!",
-          400
-        )
-      );
+//   // change password
+//   user.setPassword(newPassword);
+//   user.passwordChangedAt = new Date();
+//   user.resetToken = "";
+//   user.save((err, _) => {
+//     if (err)
+//       return next(
+//         new AppError(
+//           "Could Not Change Password. We Will Fix It Right Away!",
+//           400
+//         )
+//       );
 
-    //send mail
-    let body = {
-      data: {
-        title: "Password Changed Successfully",
-      },
-      recipient: user.email,
-      subject: "Password Changed Successfully",
-      type: "pwd_reset",
-      attachments: [
-        {
-          filename: "mobius-logo.png",
-          path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651507811/email%20attachments/mobius-logo.png",
-          cid: "mobius-logo",
-        },
-        {
-          filename: "password-reset-success.gif",
-          path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651748529/email%20attachments/password-reset-success.gif",
-          cid: "password-reset-success",
-        },
-      ],
-    };
+//     //send mail
+//     let body = {
+//       data: {
+//         title: "Password Changed Successfully",
+//       },
+//       recipient: user.email,
+//       subject: "Password Changed Successfully",
+//       type: "pwd_reset",
+//       attachments: [
+//         {
+//           filename: "mobius-logo.png",
+//           path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651507811/email%20attachments/mobius-logo.png",
+//           cid: "mobius-logo",
+//         },
+//         {
+//           filename: "password-reset-success.gif",
+//           path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651748529/email%20attachments/password-reset-success.gif",
+//           cid: "password-reset-success",
+//         },
+//       ],
+//     };
 
-    let mailer = new emailService();
-    mailer.resetSuccess(body);
+//     let mailer = new emailService();
+//     mailer.resetSuccess(body);
 
-    // send response
-    res.status(200).send({
-      status: "success",
-      message: "Password Changed Successfully!",
-    });
-  });
-});
+//     // send response
+//     res.status(200).send({
+//       status: "success",
+//       message: "Password Changed Successfully!",
+//     });
+//   });
+// });
 
 // logout user
 userAuth.logout = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.USER_ID);
+  console.log(user.name);
+
   user.lastLogoutTime = new Date();
   user.save((err, _) => {
     if (err) return next(new AppError("Could Not Log User Out!", 400));
     // send response
-    res.sendStatus(200);
+    res.status(200).send({
+      status: "success",
+      message: `You have Been Successfully Logged out`,
+    });
   });
 });
 

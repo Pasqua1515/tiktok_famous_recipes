@@ -1,35 +1,32 @@
-const router = require('express').Router();
-const { body } = require('express-validator');
-const authController = require('../controllers/authController');
+const router = require("express").Router();
+const { body } = require("express-validator");
+const {auth} = require("../middlewares/auth")
+const authController = require("../controllers/authController");
 
 // create user
 router.post(
-    '/signUp',
-    // Validation
-    body('email').isEmail(),
-    body('name').isString(),
-    body('doB').isString(),
-    body('password').isLength({ min: 8 }).matches(/\d/), // min 8 must have number
-    authController.signup
+  "/signUp",
+  // Validation
+  body("email").isEmail(),
+  body("name").isString(),
+  body("doB").isString(),
+  body("password").isLength({ min: 8 }).matches(/\d/), // min 8 must have number
+  authController.signup
 );
 
 // login
-router.post(
-    '/login',
-    authController.login
-);
+router.post("/login", authController.login);
 
 // forgot password
-router.patch(
-    '/forgot-password',
-    authController.forgotPassword
-);
+router.patch("/forgot-password", authController.forgotPassword);
+
+// // reset password
+// router.patch(
+//     '/reset-password/:token',
+//     authController.resetPassword
+// );
 
 // reset password
-router.patch(
-    '/reset-password/:token',
-    authController.resetPassword
-);
-
+router.patch("/logout",auth, authController.logout);
 
 module.exports = router;

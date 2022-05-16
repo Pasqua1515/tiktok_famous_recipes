@@ -1,5 +1,5 @@
 // Import dependencies
-//const User = require("../model/userModel");
+const User = require("../models/userModel");
 const jwt = require("../services/jwt");
 const AppError = require("../errors/appError");
 
