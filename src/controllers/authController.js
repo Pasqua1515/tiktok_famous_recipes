@@ -90,7 +90,7 @@ userAuth.login = catchAsync(async (req, res, next) => {
   if (!password) return next(new AppError("Please Provide Password.", 400));
 
   // find user with email
-  let user = await User.findOne({ email }).select(exclude);
+  let user = await User.findOne({ email }).select(exclude); //-->  research
   if (!user)
     return next(
       new AppError(
