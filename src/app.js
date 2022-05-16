@@ -36,6 +36,7 @@ app.use((req, res, next) => {
 app.use(morgan("dev"));
 
 //ROUTES
+app.use("/api/v1/auth", require("./routes/authRoute"));
 app.use("/api/v1/dish", require("./routes/dishRoute"));
 
 app.get("/", (req, res) => {
