@@ -131,32 +131,32 @@ userAuth.forgotPassword = catchAsync(async (req, res, next) => {
     // generate one time valid for 20 minutes link
     const link = `${req.get("origin")}/auth/reset-password/${user.resetToken}`;
 
-    // send mail
-    let body = {
-      data: {
-        link,
-        name: fullName,
-        title: "Mobius Password Reset",
-      },
-      recipient: user.email,
-      subject: "Mobius Password Reset",
-      type: "pwd_reset",
-      attachments: [
-        {
-          filename: "mobius-logo.png",
-          path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651507811/email%20attachments/mobius-logo.png",
-          cid: "mobius-logo",
-        },
-        {
-          filename: "forgot-password.gif",
-          path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651507779/email%20attachments/forgot-password.gif",
-          cid: "forgot-password",
-        },
-      ],
-    };
+    // // send mail
+    // let body = {
+    //   data: {
+    //     link,
+    //     name: fullName,
+    //     title: "Mobius Password Reset",
+    //   },
+    //   recipient: user.email,
+    //   subject: "Mobius Password Reset",
+    //   type: "pwd_reset",
+    //   attachments: [
+    //     {
+    //       filename: "mobius-logo.png",
+    //       path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651507811/email%20attachments/mobius-logo.png",
+    //       cid: "mobius-logo",
+    //     },
+    //     {
+    //       filename: "forgot-password.gif",
+    //       path: "https://res.cloudinary.com/mobius-kids-org/image/upload/v1651507779/email%20attachments/forgot-password.gif",
+    //       cid: "forgot-password",
+    //     },
+    //   ],
+    // };
 
-    let mailer = new emailService();
-    await mailer.reset(body);
+    // let mailer = new emailService();
+    // await mailer.reset(body);
 
     // send response
     res.status(200).send({
