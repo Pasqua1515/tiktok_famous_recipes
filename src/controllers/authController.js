@@ -241,8 +241,9 @@ userAuth.forgotPassword = catchAsync(async (req, res, next) => {
 
 // logout user
 userAuth.logout = catchAsync(async (req, res, next) => {
+  //check if user is logged
   const user = await User.findById(req.USER_ID);
-  console.log(user.name);
+  if (!user) return next(new AppError("User not logged in", 400));
 
   user.lastLogoutTime = new Date();
   user.save((err, _) => {
