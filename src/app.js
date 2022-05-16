@@ -38,6 +38,7 @@ app.use(morgan("dev"));
 //ROUTES
 app.use("/api/v1/auth", require("./routes/authRoute"));
 app.use("/api/v1/dish", require("./routes/dishRoute"));
+app.use("/api/v1/user", require("./routes/userRoute"));
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome To Tik Tok famous recipes!!");

@@ -46,7 +46,10 @@ const userSchema = new Schema(
         ref: "Dish",
       },
     ],
-    userTikTokLink: String,
+    userTikTokLink: {
+      type: String,
+      default: "tiktok.com",
+    },
     lastLoginTime: Date,
     lastLogoutTime: Date,
     passwordChangedAt: {
@@ -99,4 +102,5 @@ userSchema.methods.getFullName = function () {
   return this.name.toTitleCase();
 };
 
+// add tik tok link
 module.exports = model("User", userSchema);
