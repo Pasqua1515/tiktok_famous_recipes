@@ -5,14 +5,27 @@ const reqStr = {
 };
 
 const savedRecipesSchema = new Schema({
+  savedDishId: String,
+  savedDishes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Dish",
+    },
+  ],
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  dish: {
-    type: Schema.Types.ObjectId,
-    ref: "Dish",
-  },
 });
 
-module.exports = model("savedRecipe", savedRecipesSchema);
+//instance methods
+
+// push dish into saved idshes
+savedRecipesSchema.methods.pushDish = function (dish_id) {
+  return this.savedDishes.push(dish_id);
+};
+
+
+
+
+module.exports = model("SavedRecipe", savedRecipesSchema);

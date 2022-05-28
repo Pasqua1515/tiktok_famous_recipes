@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 const AppError = require("../errors/appError");
 const catchAsync = require("../utils/catchAsync");
 const { validationResult } = require("express-validator");
-//const { emailService }     = require('../utils/emailer');
+// const { emailService }     = require('../utils/emailer');
 
 const userAuth = {};
 const exclude = {
@@ -12,7 +12,7 @@ const exclude = {
   passwordChangedAt: 0,
 };
 
-// User Sign Up
+//  User Sign Up
 userAuth.signup = catchAsync(async (req, res, next) => {
   const { name, doB, email, password } = req.body;
 

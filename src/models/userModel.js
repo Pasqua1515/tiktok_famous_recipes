@@ -43,7 +43,7 @@ const userSchema = new Schema(
     savedDishes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Dish",
+        ref: "SavedRecipe",
       },
     ],
     userTikTokLink: {
@@ -100,6 +100,11 @@ userSchema.methods.genResetToken = function () {
 // Get Name
 userSchema.methods.getFullName = function () {
   return this.name.toTitleCase();
+};
+
+// add saved dish
+userSchema.methods.saveDish = function (savedDish) {
+  return this.savedDishes.push(savedDish);
 };
 
 // add tik tok link

@@ -31,11 +31,11 @@ dishController.uploadDish = catchAsync(async (req, res, next) => {
 
   // // Generate a specific id for each dish
   let dishId;
-  const lastCourse = await Dish.find().sort({ _id: -1 }).limit(1);
-  if (lastCourse.length == 0) {
+  const lastDish = await Dish.find().sort({ _id: -1 }).limit(1);
+  if (lastDish.length == 0) {
     dishId = "TTV-1";
   } else {
-    dishId = "TTV-" + `${Number(lastCourse[0].dishId.split("-")[1]) + 1}`;
+    dishId = "TTV-" + `${Number(lastDish[0].dishId.split("-")[1]) + 1}`;
   }
 
   let video;

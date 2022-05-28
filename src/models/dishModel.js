@@ -29,6 +29,7 @@ const dishSchema = new Schema(
       tiktokLink: reqStr,
       views: reqStr, // not definitive
       likes: { type: String, default: 0 },
+      saves: { type: Number, default: 0 },
       tags: String,
     },
     video: String,
@@ -80,6 +81,9 @@ dishSchema.methods.addIngredients = function (
   this.about.ingredients.push(all);
 };
 
-//add early prep
+// calculate saved dish
+dishSchema.methods.calcSavedDishes = function () {
+  this.about.saves = this.about.saves + 1;
+};
 
 module.exports = model("Dish", dishSchema);
