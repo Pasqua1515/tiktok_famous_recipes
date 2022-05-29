@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 //Connecting to the database
 let DB = process.env.DB_LOCAL_URI;
 
-// if (process.env.NODE_ENV === "production") {
-//   DB = process.env.DB_CLOUD_URI;
-// }
+if (process.env.NODE_ENV === "production") {
+  DB = process.env.DB_CLOUD_URI;
+}
 
 (() => {
   mongoose
