@@ -17,6 +17,6 @@ router.get("/allSaved", auth, userController.getMySavedDishes);
 router.get("/saved/:dishId", auth, userController.getOneSavedDish);
 
 //unsave dish
-router.delete("/saved/:dishId", auth, userController.unsaveDish);
+router.delete("/unsave/:dishId", auth, userController.unsaveDish);
 
 module.exports = router;

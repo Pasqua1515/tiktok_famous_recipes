@@ -147,6 +147,38 @@ userController.getOneSavedDish = catchAsync(async (req, res, next) => {
   });
 });
 
-userController.unsaveDish = catchAsync(async (req, res, next) => {});
+userController.unsaveDish = catchAsync(async (req, res, next) => {
+  /// unsaving dish Id is TTV-1 not  SD-1
+  const dishId = req.params.dishId;
+
+  let dish = await Dish.findOne({ dishId });
+  if (!dish) return next(new AppError("Dish not found", 404));
+
+  //get saved dishes of user X
+  const usersSavedDishes = await SavedRecipe.findOne({ user: req.USER_ID });
+  if (!usersSavedDishes) {
+    return next(new AppError(`Could not GET all YOUR Saved Dishes`, 404));
+  }
+
+  //find index of saved dish 
+  // if a code returns -1 it means it doesnt exist
+const i = usersSavedDishes.savedDishes.indexOf(dish._id)
+
+if( !usersSavedDishes.savedDishes[i]) {
+  return next(new AppError(`Unable to find dish because is not saved`, 404));
+}
+usersSavedDishes.savedDishes.splice(i, 1)
+
+usersSavedDishes.save((err, result) => {
+  if (err) return next(new AppError({ message: err.message }, 400));
+  else {
+    //send a response
+    res.status(201).send({
+      status: "success",
+      message:"Dish un-saved successfully",
+    });
+  }
+});
+});
 
 module.exports = userController;
